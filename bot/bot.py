@@ -1,63 +1,23 @@
 import asyncio
-import json
 import logging
 import os
-from urllib.parse import urlencode
+from http import HTTPStatus
+
 from aiogram import Bot, Dispatcher, Router, types
 from aiogram.filters import CommandStart
-from aiogram.types import (
-    BotCommand, BotCommandScopeDefault,
-    InlineKeyboardButton, InlineKeyboardMarkup,
-    WebAppInfo
-)
+from aiogram.types import BotCommand, BotCommandScopeDefault
 from dotenv import load_dotenv
-from pydantic import BaseModel
-from typing import List
+
+from schemas import ProductResponse, QuantityBySize, QuantityByWh
+from utils import get_product_description
 
 load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+URL_BACKEND = os.getenv('URL_BACKEND')
 
 dp = Dispatcher()
 router = Router(name=__name__)
 dp.include_router(router)
-
-# Модели данных
-class QuantityByWh(BaseModel):
-    wh: int
-    quantity: int
-
-class QuantityBySize(BaseModel):
-    size: str
-    quantity_by_wh: List[QuantityByWh]
-
-class ProductResponse(BaseModel):
-    nm_id: int
-    current_price: int
-    sum_quantity: int
-    quantity_by_sizes: List[QuantityBySize]
-
-    class Config:
-        from_attributes = True
-
-# Пример функции для получения данных о товаре
-async def get_product_info(nm_id: str) -> ProductResponse:
-    # Здесь должна быть логика получения данных о товаре
-    # Например, запрос к API или базе данных
-    # Для примера вернем статические данные
-    return ProductResponse(
-        nm_id=nm_id,
-        current_price=490,
-        sum_quantity=10000,
-        quantity_by_sizes=[
-            QuantityBySize(
-                size='34-36',
-                quantity_by_wh=[
-                    QuantityByWh(wh=3123, quantity=546),
-                    QuantityByWh(wh=2331, quantity=324)
-                ]
-            )
-        ]
-    )
 
 
 @router.message(CommandStart())
@@ -69,22 +29,27 @@ async def handle_start(message: types.Message):
 async def handle_product_request(message: types.Message):
     if message.text.isdigit():
         nm_id = message.text
-        product_info = await get_product_info(nm_id)
+        response = await get_product_description(nm_id)
+
+        if response is None or response['status'] != HTTPStatus.OK:
+            await message.reply('Ошибка получения данных. Попробуйте позже.')
+            return
 
         # Форматирование ответа
-        response_text = (
-            f'Товар ID: {product_info.nm_id}\n'
-            f'Цена: {product_info.current_price} руб.\n'
-            f'Общий остаток: {product_info.sum_quantity}\n'
+        product = response.parse_raw(response['text'])
+        product_info = (
+            f'Товар ID: {product.nm_id}\n'
+            f'Цена: {product.current_price} руб.\n'
+            f'Общий остаток: {product.sum_quantity}\n'
             f'Остатки по размерам:\n'
         )
 
-        for size in product_info.quantity_by_sizes:
-            response_text += f'  Размер: {size.size}\n'
+        for size in product.quantity_by_sizes:
+            product_info += f'  Размер: {size.size}\n'
             for wh in size.quantity_by_wh:
-                response_text += f'    Склад {wh.wh}: {wh.quantity} шт.\n'
+                product_info += f'    Склад {wh.wh}: {wh.quantity} шт.\n'
 
-        await message.reply(response_text)
+        await message.reply(product_info)
     else:
         await message.reply('Пожалуйста, введите корректный nm_id (число).')
 

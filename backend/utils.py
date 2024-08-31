@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from models import Product, QuantityBySize, QuantityByWh
 
+
 TIMEOUT = 2
 
 HTTP_PREFIX = 'https://card.wb.ru/cards/v1/detail?appType=1&curr=rub&dest=-1257786&spp=30&nm='
