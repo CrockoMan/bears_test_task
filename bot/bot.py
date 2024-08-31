@@ -8,7 +8,7 @@ from aiogram.types import BotCommand, BotCommandScopeDefault
 from dotenv import load_dotenv
 
 from constants import BOT_TOKEN
-from utils import get_product_description
+from utils import get_product_description, get_product_info
 
 # from schemas import ProductResponse, QuantityBySize, QuantityByWh
 # from utils import get_product_description
@@ -21,7 +21,7 @@ dp.include_router(router)
 
 @router.message(CommandStart())
 async def handle_start(message: types.Message):
-    await message.reply('Привет! Введите nm_id товара, чтобы получить информацию.')
+    await message.reply('Введите nm_id товара, чтобы получить информацию.')
 
 
 @router.message()
@@ -34,19 +34,21 @@ async def handle_product_request(message: types.Message):
             await message.reply('Ошибка получения данных. Попробуйте позже.')
             return
 
-        # Форматирование ответа
-        product = response.parse_raw(response['text'])
-        product_info = (
-            f'Товар ID: {product.nm_id}\n'
-            f'Цена: {product.current_price} руб.\n'
-            f'Общий остаток: {product.sum_quantity}\n'
-            f'Остатки по размерам:\n'
-        )
+        product_info = get_product_info(response)
 
-        for size in product.quantity_by_sizes:
-            product_info += f'  Размер: {size.size}\n'
-            for wh in size.quantity_by_wh:
-                product_info += f'    Склад {wh.wh}: {wh.quantity} шт.\n'
+        # product_info = get_product_info(response.parse_raw(response['text']))
+        # product = response.parse_raw(response['text'])
+        # product_info = (
+        #     f'Товар ID: {product.nm_id}\n'
+        #     f'Цена: {product.current_price} руб.\n'
+        #     f'Общий остаток: {product.sum_quantity}\n'
+        #     f'Остатки по размерам:\n'
+        # )
+        #
+        # for size in product.quantity_by_sizes:
+        #     product_info += f'  Размер: {size.size}\n'
+        #     for wh in size.quantity_by_wh:
+        #         product_info += f'    Склад {wh.wh}: {wh.quantity} шт.\n'
 
         await message.reply(product_info)
     else:

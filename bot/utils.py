@@ -31,6 +31,23 @@ async def get_product_description(nm_id):
     return response
 
 
+def get_product_info(product_obj):
+    product = product_obj.parse_raw(product_obj['text'])
+    product_info = (
+        f'Товар ID: {product.nm_id}\n'
+        f'Цена: {product.current_price} руб.\n'
+        f'Общий остаток: {product.sum_quantity}\n'
+        f'Остатки по размерам:\n'
+    )
+
+    for size in product.quantity_by_sizes:
+        product_info += f'  Размер: {size.size}\n'
+        for wh in size.quantity_by_wh:
+            product_info += f'    Склад {wh.wh}: {wh.quantity} шт.\n'
+
+    return product_info
+
+
 # async def get_product_info(nm_id: str) -> ProductResponse:
 #     return await get_product_description(nm_id)
     # return ProductResponse(
