@@ -27,6 +27,6 @@ async def update_product_data():
 
 # scheduler = BackgroundScheduler()
 scheduler = AsyncIOScheduler()
-scheduler.add_job(update_product_data, 'interval', seconds=30)
-# scheduler.add_job(update_product_data, 'interval', minutes=5)
+# scheduler.add_job(update_product_data, 'interval', seconds=30)
+scheduler.add_job(update_product_data, 'interval', minutes=5)
 scheduler.start()

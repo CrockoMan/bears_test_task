@@ -12,6 +12,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:8000",
+    'https://bird-sacred-humbly.ngrok-free.app'
     "https://your-domain.com",
 ]
 

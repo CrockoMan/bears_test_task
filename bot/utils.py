@@ -1,6 +1,6 @@
 import aiohttp
 
-from bot.bot import URL_BACKEND
+from constants import URL_BACKEND
 from schemas import ProductResponse
 
 TIMEOUT = 2
