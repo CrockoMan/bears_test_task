@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  web:
+  backend:
     build:
       context: ./backend
     ports:
@@ -21,7 +21,7 @@ services:
     ports:
       - "${DB_PORT}:${DB_PORT}"
 
-  vet_bot:
+  tg_bot:
     build:
       context: ./bot
     env_file: ./bot/.env

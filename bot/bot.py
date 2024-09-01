@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 from http import HTTPStatus
 
 from aiogram import Bot, Dispatcher, Router, types
@@ -10,8 +11,13 @@ from dotenv import load_dotenv
 from constants import BOT_TOKEN
 from utils import get_product_description, get_product_info
 
-# from schemas import ProductResponse, QuantityBySize, QuantityByWh
-# from utils import get_product_description
+#
+# load_dotenv()
+#
+# BOT_TOKEN = os.getenv('BOT_TOKEN')
+# URL_BACKEND = os.getenv('URL_BACKEND')
+# print(BOT_TOKEN)
+# print(URL_BACKEND)
 
 
 dp = Dispatcher()

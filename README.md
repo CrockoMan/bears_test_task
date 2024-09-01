@@ -85,11 +85,9 @@ python bot.py
 
 ```
 cd backend
-docker build -t backend .
-docker run -d -p 8000:8000 backend
+docker compose -f docker-compose.yml up
 cd bot
-docker build -t bot .
-docker run -d bot
+docker compose -f docker-compose.yml up
 ```
 
 Автор: [К.Гурашкин](https://github.com/CrockoMan)
