@@ -1,7 +1,9 @@
+import json
+
 import aiohttp
 
-from constants import URL_BACKEND
 from schemas import ProductResponse
+from constants import URL_BACKEND
 
 TIMEOUT = 2
 
@@ -26,41 +28,24 @@ async def async_http_get(url, timeout=TIMEOUT):
 async def get_product_description(nm_id):
     response = await async_http_get(nm_id)
     if not response:
-        # raise HTTPException(status_code=404, detail='Item not found')
         return None
     return response
 
 
 def get_product_info(product_obj):
-    product = product_obj.parse_raw(product_obj['text'])
+    json_data = json.loads(product_obj['text'])
+
+    product = ProductResponse(**json_data)
     product_info = (
         f'Товар ID: {product.nm_id}\n'
-        f'Цена: {product.current_price} руб.\n'
+        f'Цена: {product.current_price // 100}.'
+        f'{(product.current_price % 100):02} руб.\n'
         f'Общий остаток: {product.sum_quantity}\n'
-        f'Остатки по размерам:\n'
+        f'Остатки:\n'
     )
 
     for size in product.quantity_by_sizes:
-        product_info += f'  Размер: {size.size}\n'
         for wh in size.quantity_by_wh:
-            product_info += f'    Склад {wh.wh}: {wh.quantity} шт.\n'
+            product_info += f'    Склад {wh.wh}:  {wh.quantity} \n'
 
     return product_info
-
-
-# async def get_product_info(nm_id: str) -> ProductResponse:
-#     return await get_product_description(nm_id)
-    # return ProductResponse(
-    #     nm_id=nm_id,
-    #     current_price=490,
-    #     sum_quantity=10000,
-    #     quantity_by_sizes=[
-    #         QuantityBySize(
-    #             size='34-36',
-    #             quantity_by_wh=[
-    #                 QuantityByWh(wh=3123, quantity=546),
-    #                 QuantityByWh(wh=2331, quantity=324)
-    #             ]
-    #         )
-    #     ]
-    # )

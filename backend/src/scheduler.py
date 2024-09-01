@@ -3,8 +3,8 @@ from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import HTTPException
 
-from database import SessionLocal
-from models import Product
+from src.database import SessionLocal
+from src.models import Product
 from utils import create_or_update_product
 
 

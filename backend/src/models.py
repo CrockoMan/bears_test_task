@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-from database import Base, engine
+from src.database import Base, engine
 
 
 class QuantityByWh(Base):

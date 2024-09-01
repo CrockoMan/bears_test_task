@@ -2,16 +2,16 @@ from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
-import scheduler
-from database import get_db
-from models import Product
-from schemas import ProductResponse
-from utils import create_or_update_product
+from src.database import get_db
+from src.models import Product
+from src.schemas import ProductResponse
+from src.utils import create_or_update_product
 
 app = FastAPI()
 
 origins = [
     "http://localhost:8000",
+    "0.0.0.0:8000",
     'https://bird-sacred-humbly.ngrok-free.app'
 ]
 
@@ -19,7 +19,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET"],
     allow_headers=["*"],
 )
 

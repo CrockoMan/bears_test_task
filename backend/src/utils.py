@@ -5,7 +5,7 @@ import aiohttp
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from models import Product, QuantityBySize, QuantityByWh
+from src.models import Product, QuantityBySize, QuantityByWh
 
 
 TIMEOUT = 2
@@ -61,25 +61,6 @@ def process_external_product_data(product_data):
 
     return product
 
-
-# async def create_or_update_product(nm_id: int, db: Session):
-#     response = await get_product_description(str(nm_id))
-#     if response is None or response['status'] != HTTPStatus.OK:
-#         raise HTTPException(status_code=404, detail='Product not found')
-#
-#     data = json.loads(response['text'])
-#
-#     for product_data in data['data']['products']:
-#         if product_data['id'] == nm_id:
-#             product = process_external_product_data(product_data)
-#
-#             db.add(product)
-#             db.commit()
-#             db.refresh(product)
-#
-#             return product
-#
-#     raise HTTPException(status_code=404, detail='Product not found')
 
 async def create_or_update_product(
         nm_id: int, 
