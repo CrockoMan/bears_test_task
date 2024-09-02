@@ -5,10 +5,12 @@
 ### Работоспособность бота можно проверить здесь: https://t.me/CrockoTeleBot  </br>
 ##### Стек: Pyton, FastAPI, aiogram
 Результат бека:
+
 ![image](https://github.com/user-attachments/assets/da29060c-d0d3-44cc-ad9a-f986306623a2)
 ![image](https://github.com/user-attachments/assets/ff31464f-cbcf-46c1-9ea0-fa4d5dcffbde)
 
 Результат бота:
+
 ![image](https://github.com/user-attachments/assets/30050237-358f-4c5c-9719-ccca607a588b)
 
 Клонировать репозиторий и перейти в него в командной строке:
