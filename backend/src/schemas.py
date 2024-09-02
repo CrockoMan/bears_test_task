@@ -18,5 +18,4 @@ class ProductResponse(BaseModel):
     quantity_by_sizes: list[QuantityBySize]
 
     class Config:
-        # orm_mode = True
         from_attributes = True

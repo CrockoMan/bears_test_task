@@ -1,24 +1,13 @@
 import asyncio
 import logging
-import os
 from http import HTTPStatus
 
 from aiogram import Bot, Dispatcher, Router, types
 from aiogram.filters import CommandStart
 from aiogram.types import BotCommand, BotCommandScopeDefault
-from dotenv import load_dotenv
 
 from constants import BOT_TOKEN
 from utils import get_product_description, get_product_info
-
-#
-# load_dotenv()
-#
-# BOT_TOKEN = os.getenv('BOT_TOKEN')
-# URL_BACKEND = os.getenv('URL_BACKEND')
-# print(BOT_TOKEN)
-# print(URL_BACKEND)
-
 
 dp = Dispatcher()
 router = Router(name=__name__)
@@ -42,20 +31,6 @@ async def handle_product_request(message: types.Message):
 
         product_info = get_product_info(response)
 
-        # product_info = get_product_info(response.parse_raw(response['text']))
-        # product = response.parse_raw(response['text'])
-        # product_info = (
-        #     f'Товар ID: {product.nm_id}\n'
-        #     f'Цена: {product.current_price} руб.\n'
-        #     f'Общий остаток: {product.sum_quantity}\n'
-        #     f'Остатки по размерам:\n'
-        # )
-        #
-        # for size in product.quantity_by_sizes:
-        #     product_info += f'  Размер: {size.size}\n'
-        #     for wh in size.quantity_by_wh:
-        #         product_info += f'    Склад {wh.wh}: {wh.quantity} шт.\n'
-
         await message.reply(product_info)
     else:
         await message.reply('Пожалуйста, введите корректный nm_id (число).')
@@ -72,6 +47,10 @@ async def set_commands(bot: Bot):
 
 
 async def main():
+    if not BOT_TOKEN or not isinstance(BOT_TOKEN, str):
+        logging.error("BOT_TOKEN должен быть передан.")
+        return
+
     bot = Bot(
         token=BOT_TOKEN,
     )
@@ -86,4 +65,7 @@ async def main():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        logging.exception(e)

@@ -5,9 +5,11 @@ class QuantityByWh(BaseModel):
     wh: int
     quantity: int
 
+
 class QuantityBySize(BaseModel):
     size: str
     quantity_by_wh: list[QuantityByWh]
+
 
 class ProductResponse(BaseModel):
     nm_id: int

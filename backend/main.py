@@ -5,6 +5,7 @@ from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
+import src.scheduler
 from src.database import get_db
 from src.models import Product
 from src.schemas import ProductResponse

@@ -2,8 +2,8 @@ import json
 
 import aiohttp
 
-from schemas import ProductResponse
 from constants import URL_BACKEND
+from schemas import ProductResponse
 
 TIMEOUT = 2
 
