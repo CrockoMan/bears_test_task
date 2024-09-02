@@ -60,7 +60,7 @@ python3 -m venv venv
 
     ```
     python3 -m pip install --upgrade pip
-    python3 install -r requirements.txt
+    pip install -r requirements.txt
     ```
 * Если у вас windows
 
