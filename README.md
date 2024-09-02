@@ -28,7 +28,7 @@
 ![image](https://github.com/user-attachments/assets/b1ee5c18-7695-4fcd-b523-27be1eef1c23)
 
 
-![image](https://github.com/user-attachments/assets/c52ecd12-fe73-4abf-9acf-be507d1e2b54)
+![image](https://github.com/user-attachments/assets/25567045-d7d9-450f-bfe3-0c68d0695be2)
 
 Запуск проекта:</br>
 Клонировать репозиторий и перейти в него в командной строке:
