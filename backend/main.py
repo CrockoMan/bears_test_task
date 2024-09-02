@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from starlette.middleware.cors import CORSMiddleware
 
 import src.scheduler
+from src.constants import ALLOWED_HOSTS
 from src.database import get_db
 from src.models import Product
 from src.schemas import ProductResponse
@@ -23,15 +24,9 @@ log = logging.getLogger(__name__)
 log.info('Application started at: %s', datetime.now())
 
 
-origins = [
-    "http://localhost:8000",
-    "0.0.0.0:8000",
-    'http://194.26.226.134/'
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=ALLOWED_HOSTS,
     allow_credentials=True,
     allow_methods=["GET"],
     allow_headers=["*"],
