@@ -117,5 +117,9 @@ docker compose -f docker-compose.yml up
 cd bot
 docker compose -f docker-compose.yml up
 ```
+Для одновременного запуска бекенда и бота выполните команду из корневой директории проекта
+```
+docker compose -f docker-compose.yml up
+```
 
 Автор: [К.Гурашкин](https://github.com/CrockoMan)
