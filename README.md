@@ -1,4 +1,4 @@
-## BEARS Тестовое задание Python-разработчик 
+## BEARS Тестовое задание Python-разработчик компании "Интернет медведи"
 Тестовое задание.    </br>
 Описание задания https://docs.google.com/document/d/1Sw1HdiJ-yJRoNv3HRlN7RN9ifZbCPFFVOCkqFr4cTT4/edit
 ### Работоспособность бекенда можно проверить здесь: http://194.26.226.134/docs  </br></br>
