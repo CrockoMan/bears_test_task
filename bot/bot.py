@@ -7,7 +7,8 @@ from aiogram.filters import CommandStart
 from aiogram.types import BotCommand, BotCommandScopeDefault
 
 from constants import (
-    BOT_TOKEN, NEED_BOT_TOKEN, NEED_CORRECT_NM_ID, NEED_NM_ID, RESPONSE_ERROR
+    BOT_TOKEN, NEED_BOT_TOKEN, NEED_CORRECT_NM_ID, NEED_NM_ID, RESPONSE_ERROR,
+    NOT_FOUND_ERROR
 )
 from utils import get_product_description, get_product_info
 
@@ -28,8 +29,14 @@ async def handle_product_request(message: types.Message):
         nm_id = message.text
         response = await get_product_description(nm_id)
 
-        if response is None or response['status'] != HTTPStatus.OK:
+        if response is None:
             await message.reply(RESPONSE_ERROR)
+            return
+        elif response['status'] == HTTPStatus.NOT_FOUND:
+            await message.reply(NOT_FOUND_ERROR)
+            return
+        elif response['status'] != HTTPStatus.OK:
+            await message.reply(NOT_FOUND_ERROR)
             return
 
         product_info = get_product_info(response)
