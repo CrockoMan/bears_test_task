@@ -2,10 +2,8 @@ import json
 
 import aiohttp
 
-from constants import URL_BACKEND
+from constants import TIMEOUT, URL_BACKEND
 from schemas import ProductResponse
-
-TIMEOUT = 2
 
 
 async def async_http_get(url, timeout=TIMEOUT):
@@ -21,7 +19,7 @@ async def async_http_get(url, timeout=TIMEOUT):
             'status': response.status,
             'text': text
         }
-    except Exception as e:
+    except Exception:
         return None
 
 

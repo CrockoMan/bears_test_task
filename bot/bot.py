@@ -6,8 +6,11 @@ from aiogram import Bot, Dispatcher, Router, types
 from aiogram.filters import CommandStart
 from aiogram.types import BotCommand, BotCommandScopeDefault
 
-from constants import BOT_TOKEN
+from constants import (
+    BOT_TOKEN, NEED_BOT_TOKEN, NEED_CORRECT_NM_ID, NEED_NM_ID, RESPONSE_ERROR
+)
 from utils import get_product_description, get_product_info
+
 
 dp = Dispatcher()
 router = Router(name=__name__)
@@ -16,7 +19,7 @@ dp.include_router(router)
 
 @router.message(CommandStart())
 async def handle_start(message: types.Message):
-    await message.reply('Введите nm_id товара, чтобы получить информацию.')
+    await message.reply(NEED_NM_ID)
 
 
 @router.message()
@@ -26,14 +29,14 @@ async def handle_product_request(message: types.Message):
         response = await get_product_description(nm_id)
 
         if response is None or response['status'] != HTTPStatus.OK:
-            await message.reply('Ошибка получения данных. Попробуйте позже.')
+            await message.reply(RESPONSE_ERROR)
             return
 
         product_info = get_product_info(response)
 
         await message.reply(product_info)
     else:
-        await message.reply('Пожалуйста, введите корректный nm_id (число).')
+        await message.reply(NEED_CORRECT_NM_ID)
 
 
 async def set_commands(bot: Bot):
@@ -48,7 +51,7 @@ async def set_commands(bot: Bot):
 
 async def main():
     if not BOT_TOKEN or not isinstance(BOT_TOKEN, str):
-        logging.error("BOT_TOKEN должен быть передан.")
+        logging.error(NEED_BOT_TOKEN)
         return
 
     bot = Bot(
